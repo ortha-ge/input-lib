@@ -5,7 +5,7 @@ module;
 
 module Input.Systems;
 
-import Core.WindowInternal;
+import Core.GLFWWindow;
 import Input.KeyboardState;
 import Input.MouseState;
 
@@ -191,8 +191,8 @@ namespace Input {
 	}
 
 	void InputSystems::tickKeyboardState(entt::registry& registry) {
-		auto createKeyboardStateView = registry.view<Core::WindowInternal>(entt::exclude<KeyboardState>);
-		createKeyboardStateView.each([&registry](entt::entity entity, Core::WindowInternal& window) {
+		auto createKeyboardStateView = registry.view<Core::GLFWWindow>(entt::exclude<KeyboardState>);
+		createKeyboardStateView.each([&registry](entt::entity entity, Core::GLFWWindow& window) {
 			registry.emplace<KeyboardState>(entity);
 			glfwSetKeyCallback(window.window, [](GLFWwindow* window, int key, int, int action, int) {
 				if (auto keyInternal = getKeyFromGLFW(key)) {
@@ -207,8 +207,8 @@ namespace Input {
 			});
 		});
 
-		auto createMouseStateView = registry.view<Core::WindowInternal>(entt::exclude<MouseState>);
-		createMouseStateView.each([&registry](entt::entity entity, Core::WindowInternal& window) {
+		auto createMouseStateView = registry.view<Core::GLFWWindow>(entt::exclude<MouseState>);
+		createMouseStateView.each([&registry](entt::entity entity, Core::GLFWWindow& window) {
 			registry.emplace<MouseState>(entity);
 			glfwSetCursorPosCallback(window.window, [](GLFWwindow* window, double xPos, double ypos) {
 				auto& mouseStateInternal = getMouseStateInternal(window);
@@ -224,8 +224,8 @@ namespace Input {
 			});
 		});
 
-		auto pollKeyboardStateView = registry.view<const Core::WindowInternal, KeyboardState>();
-		pollKeyboardStateView.each([](const Core::WindowInternal& window, KeyboardState& keyboardState) {
+		auto pollKeyboardStateView = registry.view<const Core::GLFWWindow, KeyboardState>();
+		pollKeyboardStateView.each([](const Core::GLFWWindow& window, KeyboardState& keyboardState) {
 			//KeyboardState oldStates = keyboardState;
 			auto& keyboardStateInternal = getKeyboardStateInternal(window.window);
 			keyboardState = keyboardStateInternal;
@@ -233,8 +233,8 @@ namespace Input {
 			//keyboardStateInternal = oldStates;
 		});
 
-		auto pollMouseStateView = registry.view<const Core::WindowInternal, MouseState>();
-		pollMouseStateView.each([](const Core::WindowInternal& window, MouseState& mouseState) {
+		auto pollMouseStateView = registry.view<const Core::GLFWWindow, MouseState>();
+		pollMouseStateView.each([](const Core::GLFWWindow& window, MouseState& mouseState) {
 			auto& mouseStateInternal = getMouseStateInternal(window.window);
 			mouseState = mouseStateInternal;
 		});
