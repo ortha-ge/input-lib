@@ -3,8 +3,6 @@ export module Input.DeviceInputEvent;
 
 export namespace Input {
 
-    struct DeviceInputEvent {
+	struct DeviceInputEvent {};
 
-    };
-
-} // Input
+} // namespace Input

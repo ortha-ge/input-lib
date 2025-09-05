@@ -9,27 +9,24 @@ import Core.Scheduler;
 
 export namespace Input {
 
-    class InputSystems {
-    public:
+	class InputSystems {
+	public:
+		InputSystems(entt::registry&, Core::Scheduler&);
+		~InputSystems();
 
-        InputSystems(entt::registry&, Core::Scheduler&);
-        ~InputSystems();
+		InputSystems(InputSystems&&) = delete;
+		InputSystems& operator=(InputSystems&&) noexcept = delete;
 
-        InputSystems(InputSystems&&) = delete;
-        InputSystems& operator=(InputSystems&&) noexcept = delete;
+		InputSystems(const InputSystems&) = delete;
+		InputSystems& operator=(const InputSystems&) = delete;
 
-        InputSystems(const InputSystems&) = delete;
-        InputSystems& operator=(const InputSystems&) = delete;
+		void tick(entt::registry&);
+		void tickKeyboardState(entt::registry&);
 
-        void tick(entt::registry&);
-        void tickKeyboardState(entt::registry&);
+	private:
+		entt::registry& mRegistry;
+		Core::Scheduler& mScheduler;
+		Core::TaskHandle mTickHandle{};
+	};
 
-    private:
-
-        entt::registry& mRegistry;
-        Core::Scheduler& mScheduler;
-        Core::TaskHandle mTickHandle{};
-
-    };
-
-} // Input
+} // namespace Input

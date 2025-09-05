@@ -7,8 +7,8 @@ export module Input.KeyboardState;
 
 export namespace Input {
 
-    enum class Key : uint8_t {
-    	Space,
+	enum class Key : uint8_t {
+		Space,
 		Apostrophe,
 		Comma,
 		Minus,
@@ -130,15 +130,15 @@ export namespace Input {
 		Menu,
 
 		Count
-    };
+	};
 
-    constexpr uint8_t KeyCount = static_cast<uint8_t>(Key::Count);
+	constexpr uint8_t KeyCount = static_cast<uint8_t>(Key::Count);
 
-    struct KeyboardState {
+	struct KeyboardState {
 		bool keys[KeyCount]{};
 		std::vector<uint8_t> charInput{};
-    };
+	};
 
-    bool isKeyPressed(const KeyboardState&, Key);
+	bool isKeyPressed(const KeyboardState&, Key);
 
-} // Input
+} // namespace Input

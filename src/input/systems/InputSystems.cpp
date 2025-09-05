@@ -1,7 +1,7 @@
 module;
 
-#include <entt/entt.hpp>
 #include <GLFW/glfw3.h>
+#include <entt/entt.hpp>
 
 module Input.Systems;
 
@@ -32,162 +32,271 @@ namespace Input {
 		: mRegistry{ registry }
 		, mScheduler{ scheduler } {
 
-		mTickHandle = mScheduler.schedule([this]() {
-		   tick(mRegistry);
-		});
+		mTickHandle = mScheduler.schedule([this]() { tick(mRegistry); });
 	}
 
-	InputSystems::~InputSystems() {
-		mScheduler.unschedule(std::move(mTickHandle));
-	}
+	InputSystems::~InputSystems() { mScheduler.unschedule(std::move(mTickHandle)); }
 
-	void InputSystems::tick(entt::registry& registry) {
-		tickKeyboardState(registry);
-	}
+	void InputSystems::tick(entt::registry& registry) { tickKeyboardState(registry); }
 
 	std::optional<Key> getKeyFromGLFW(int key) {
-		static std::unordered_map<int, Key> keyMapping = {
-			{ GLFW_KEY_SPACE, Key::Space },
-			{ GLFW_KEY_APOSTROPHE, Key::Apostrophe },
-			{ GLFW_KEY_COMMA, Key::Comma },
-			{ GLFW_KEY_MINUS, Key::Minus },
-			{ GLFW_KEY_PERIOD, Key::Period },
-			{ GLFW_KEY_SLASH, Key::Slash },
-			{ GLFW_KEY_0, Key::Number0 },
-			{ GLFW_KEY_1, Key::Number1 },
-			{ GLFW_KEY_2, Key::Number2 },
-			{ GLFW_KEY_3, Key::Number3 },
-			{ GLFW_KEY_4, Key::Number4 },
-			{ GLFW_KEY_5, Key::Number5 },
-			{ GLFW_KEY_6, Key::Number6 },
-			{ GLFW_KEY_7, Key::Number7 },
-			{ GLFW_KEY_8, Key::Number8 },
-			{ GLFW_KEY_9, Key::Number9 },
-			{ GLFW_KEY_SEMICOLON, Key::Semicolon },
-			{ GLFW_KEY_EQUAL, Key::Equal },
-			{ GLFW_KEY_A, Key::A },
-			{ GLFW_KEY_B, Key::B },
-			{ GLFW_KEY_C, Key::C },
-			{ GLFW_KEY_D, Key::D },
-			{ GLFW_KEY_E, Key::E },
-			{ GLFW_KEY_F, Key::F },
-			{ GLFW_KEY_G, Key::G },
-			{ GLFW_KEY_H, Key::H },
-			{ GLFW_KEY_I, Key::I },
-			{ GLFW_KEY_J, Key::J },
-			{ GLFW_KEY_K, Key::K },
-			{ GLFW_KEY_L, Key::L },
-			{ GLFW_KEY_M, Key::M },
-			{ GLFW_KEY_N, Key::N },
-			{ GLFW_KEY_O, Key::O },
-			{ GLFW_KEY_P, Key::P },
-			{ GLFW_KEY_Q, Key::Q },
-			{ GLFW_KEY_R, Key::R },
-			{ GLFW_KEY_S, Key::S },
-			{ GLFW_KEY_T, Key::T },
-			{ GLFW_KEY_U, Key::U },
-			{ GLFW_KEY_V, Key::V },
-			{ GLFW_KEY_W, Key::W },
-			{ GLFW_KEY_X, Key::X },
-			{ GLFW_KEY_Y, Key::Y },
-			{ GLFW_KEY_Z, Key::Z },
-			{ GLFW_KEY_LEFT_BRACKET, Key::LeftBracket },
-			{ GLFW_KEY_BACKSLASH, Key::Backslash },
-			{ GLFW_KEY_RIGHT_BRACKET, Key::RightBracket },
-			{ GLFW_KEY_GRAVE_ACCENT, Key::GraveAccent },
-			{ GLFW_KEY_WORLD_1, Key::World1 },
-			{ GLFW_KEY_WORLD_2, Key::World2 },
-			{ GLFW_KEY_ESCAPE, Key::Escape },
-			{ GLFW_KEY_ENTER, Key::Enter },
-			{ GLFW_KEY_TAB, Key::Tab },
-			{ GLFW_KEY_BACKSPACE, Key::Backspace },
-			{ GLFW_KEY_INSERT, Key::Insert },
-			{ GLFW_KEY_DELETE, Key::Delete },
-			{ GLFW_KEY_RIGHT, Key::Right },
-			{ GLFW_KEY_LEFT, Key::Left },
-			{ GLFW_KEY_DOWN, Key::Down },
-			{ GLFW_KEY_UP, Key::Up },
-			{ GLFW_KEY_PAGE_UP, Key::PageUp },
-			{ GLFW_KEY_PAGE_DOWN, Key::PageDown },
-			{ GLFW_KEY_HOME, Key::Home },
-			{ GLFW_KEY_END, Key::End },
-			{ GLFW_KEY_CAPS_LOCK, Key::CapsLock },
-			{ GLFW_KEY_SCROLL_LOCK, Key::ScrollLock },
-			{ GLFW_KEY_NUM_LOCK, Key::NumLock },
-			{ GLFW_KEY_PRINT_SCREEN, Key::PrintScreen },
-			{ GLFW_KEY_PAUSE, Key::Pause },
-			{ GLFW_KEY_F1, Key::F1 },
-			{ GLFW_KEY_F2, Key::F2 },
-			{ GLFW_KEY_F3, Key::F3 },
-			{ GLFW_KEY_F4, Key::F4 },
-			{ GLFW_KEY_F5, Key::F5 },
-			{ GLFW_KEY_F6, Key::F6 },
-			{ GLFW_KEY_F7, Key::F7 },
-			{ GLFW_KEY_F8, Key::F8 },
-			{ GLFW_KEY_F9, Key::F9 },
-			{ GLFW_KEY_F10, Key::F10 },
-			{ GLFW_KEY_F11, Key::F11 },
-			{ GLFW_KEY_F12, Key::F12 },
-			{ GLFW_KEY_F13, Key::F13 },
-			{ GLFW_KEY_F14, Key::F14 },
-			{ GLFW_KEY_F15, Key::F15 },
-			{ GLFW_KEY_F16, Key::F16 },
-			{ GLFW_KEY_F17, Key::F17 },
-			{ GLFW_KEY_F18, Key::F18 },
-			{ GLFW_KEY_F19, Key::F19 },
-			{ GLFW_KEY_F20, Key::F20 },
-			{ GLFW_KEY_F21, Key::F21 },
-			{ GLFW_KEY_F22, Key::F22 },
-			{ GLFW_KEY_F23, Key::F23 },
-			{ GLFW_KEY_F24, Key::F24 },
-			{ GLFW_KEY_F25, Key::F25 },
-			{ GLFW_KEY_KP_0, Key::Keypad0 },
-			{ GLFW_KEY_KP_1, Key::Keypad1 },
-			{ GLFW_KEY_KP_2, Key::Keypad2 },
-			{ GLFW_KEY_KP_3, Key::Keypad3 },
-			{ GLFW_KEY_KP_4, Key::Keypad4 },
-			{ GLFW_KEY_KP_5, Key::Keypad5 },
-			{ GLFW_KEY_KP_6, Key::Keypad6 },
-			{ GLFW_KEY_KP_7, Key::Keypad7 },
-			{ GLFW_KEY_KP_8, Key::Keypad8 },
-			{ GLFW_KEY_KP_9, Key::Keypad9 },
-			{ GLFW_KEY_KP_DECIMAL, Key::KeypadDecimal },
-			{ GLFW_KEY_KP_DIVIDE, Key::KeypadDivide },
-			{ GLFW_KEY_KP_MULTIPLY, Key::KeypadMultiply },
-			{ GLFW_KEY_KP_SUBTRACT, Key::KeypadSubtract },
-			{ GLFW_KEY_KP_ADD, Key::KeypadAdd },
-			{ GLFW_KEY_KP_ENTER, Key::KeypadEnter },
-			{ GLFW_KEY_KP_EQUAL, Key::KeypadEqual },
-			{ GLFW_KEY_LEFT_SHIFT, Key::LeftShift },
-			{ GLFW_KEY_LEFT_CONTROL, Key::LeftControl },
-			{ GLFW_KEY_LEFT_ALT, Key::LeftAlt },
-			{ GLFW_KEY_LEFT_SUPER, Key::LeftSuper },
-			{ GLFW_KEY_RIGHT_SHIFT, Key::RightShift },
-			{ GLFW_KEY_RIGHT_CONTROL, Key::RightControl },
-			{ GLFW_KEY_RIGHT_ALT, Key::RightAlt },
-			{ GLFW_KEY_RIGHT_SUPER, Key::RightSuper },
-			{ GLFW_KEY_MENU, Key::Menu }
-		};
-
-		if (const auto it = keyMapping.find(key); it != keyMapping.end()) {
-			return it->second;
+		switch (key) {
+			case GLFW_KEY_SPACE:
+				return Key::Space;
+			case GLFW_KEY_APOSTROPHE:
+				return Key::Apostrophe;
+			case GLFW_KEY_COMMA:
+				return Key::Comma;
+			case GLFW_KEY_MINUS:
+				return Key::Minus;
+			case GLFW_KEY_PERIOD:
+				return Key::Period;
+			case GLFW_KEY_SLASH:
+				return Key::Slash;
+			case GLFW_KEY_0:
+				return Key::Number0;
+			case GLFW_KEY_1:
+				return Key::Number1;
+			case GLFW_KEY_2:
+				return Key::Number2;
+			case GLFW_KEY_3:
+				return Key::Number3;
+			case GLFW_KEY_4:
+				return Key::Number4;
+			case GLFW_KEY_5:
+				return Key::Number5;
+			case GLFW_KEY_6:
+				return Key::Number6;
+			case GLFW_KEY_7:
+				return Key::Number7;
+			case GLFW_KEY_8:
+				return Key::Number8;
+			case GLFW_KEY_9:
+				return Key::Number9;
+			case GLFW_KEY_SEMICOLON:
+				return Key::Semicolon;
+			case GLFW_KEY_EQUAL:
+				return Key::Equal;
+			case GLFW_KEY_A:
+				return Key::A;
+			case GLFW_KEY_B:
+				return Key::B;
+			case GLFW_KEY_C:
+				return Key::C;
+			case GLFW_KEY_D:
+				return Key::D;
+			case GLFW_KEY_E:
+				return Key::E;
+			case GLFW_KEY_F:
+				return Key::F;
+			case GLFW_KEY_G:
+				return Key::G;
+			case GLFW_KEY_H:
+				return Key::H;
+			case GLFW_KEY_I:
+				return Key::I;
+			case GLFW_KEY_J:
+				return Key::J;
+			case GLFW_KEY_K:
+				return Key::K;
+			case GLFW_KEY_L:
+				return Key::L;
+			case GLFW_KEY_M:
+				return Key::M;
+			case GLFW_KEY_N:
+				return Key::N;
+			case GLFW_KEY_O:
+				return Key::O;
+			case GLFW_KEY_P:
+				return Key::P;
+			case GLFW_KEY_Q:
+				return Key::Q;
+			case GLFW_KEY_R:
+				return Key::R;
+			case GLFW_KEY_S:
+				return Key::S;
+			case GLFW_KEY_T:
+				return Key::T;
+			case GLFW_KEY_U:
+				return Key::U;
+			case GLFW_KEY_V:
+				return Key::V;
+			case GLFW_KEY_W:
+				return Key::W;
+			case GLFW_KEY_X:
+				return Key::X;
+			case GLFW_KEY_Y:
+				return Key::Y;
+			case GLFW_KEY_Z:
+				return Key::Z;
+			case GLFW_KEY_LEFT_BRACKET:
+				return Key::LeftBracket;
+			case GLFW_KEY_BACKSLASH:
+				return Key::Backslash;
+			case GLFW_KEY_RIGHT_BRACKET:
+				return Key::RightBracket;
+			case GLFW_KEY_GRAVE_ACCENT:
+				return Key::GraveAccent;
+			case GLFW_KEY_WORLD_1:
+				return Key::World1;
+			case GLFW_KEY_WORLD_2:
+				return Key::World2;
+			case GLFW_KEY_ESCAPE:
+				return Key::Escape;
+			case GLFW_KEY_ENTER:
+				return Key::Enter;
+			case GLFW_KEY_TAB:
+				return Key::Tab;
+			case GLFW_KEY_BACKSPACE:
+				return Key::Backspace;
+			case GLFW_KEY_INSERT:
+				return Key::Insert;
+			case GLFW_KEY_DELETE:
+				return Key::Delete;
+			case GLFW_KEY_RIGHT:
+				return Key::Right;
+			case GLFW_KEY_LEFT:
+				return Key::Left;
+			case GLFW_KEY_DOWN:
+				return Key::Down;
+			case GLFW_KEY_UP:
+				return Key::Up;
+			case GLFW_KEY_PAGE_UP:
+				return Key::PageUp;
+			case GLFW_KEY_PAGE_DOWN:
+				return Key::PageDown;
+			case GLFW_KEY_HOME:
+				return Key::Home;
+			case GLFW_KEY_END:
+				return Key::End;
+			case GLFW_KEY_CAPS_LOCK:
+				return Key::CapsLock;
+			case GLFW_KEY_SCROLL_LOCK:
+				return Key::ScrollLock;
+			case GLFW_KEY_NUM_LOCK:
+				return Key::NumLock;
+			case GLFW_KEY_PRINT_SCREEN:
+				return Key::PrintScreen;
+			case GLFW_KEY_PAUSE:
+				return Key::Pause;
+			case GLFW_KEY_F1:
+				return Key::F1;
+			case GLFW_KEY_F2:
+				return Key::F2;
+			case GLFW_KEY_F3:
+				return Key::F3;
+			case GLFW_KEY_F4:
+				return Key::F4;
+			case GLFW_KEY_F5:
+				return Key::F5;
+			case GLFW_KEY_F6:
+				return Key::F6;
+			case GLFW_KEY_F7:
+				return Key::F7;
+			case GLFW_KEY_F8:
+				return Key::F8;
+			case GLFW_KEY_F9:
+				return Key::F9;
+			case GLFW_KEY_F10:
+				return Key::F10;
+			case GLFW_KEY_F11:
+				return Key::F11;
+			case GLFW_KEY_F12:
+				return Key::F12;
+			case GLFW_KEY_F13:
+				return Key::F13;
+			case GLFW_KEY_F14:
+				return Key::F14;
+			case GLFW_KEY_F15:
+				return Key::F15;
+			case GLFW_KEY_F16:
+				return Key::F16;
+			case GLFW_KEY_F17:
+				return Key::F17;
+			case GLFW_KEY_F18:
+				return Key::F18;
+			case GLFW_KEY_F19:
+				return Key::F19;
+			case GLFW_KEY_F20:
+				return Key::F20;
+			case GLFW_KEY_F21:
+				return Key::F21;
+			case GLFW_KEY_F22:
+				return Key::F22;
+			case GLFW_KEY_F23:
+				return Key::F23;
+			case GLFW_KEY_F24:
+				return Key::F24;
+			case GLFW_KEY_F25:
+				return Key::F25;
+			case GLFW_KEY_KP_0:
+				return Key::Keypad0;
+			case GLFW_KEY_KP_1:
+				return Key::Keypad1;
+			case GLFW_KEY_KP_2:
+				return Key::Keypad2;
+			case GLFW_KEY_KP_3:
+				return Key::Keypad3;
+			case GLFW_KEY_KP_4:
+				return Key::Keypad4;
+			case GLFW_KEY_KP_5:
+				return Key::Keypad5;
+			case GLFW_KEY_KP_6:
+				return Key::Keypad6;
+			case GLFW_KEY_KP_7:
+				return Key::Keypad7;
+			case GLFW_KEY_KP_8:
+				return Key::Keypad8;
+			case GLFW_KEY_KP_9:
+				return Key::Keypad9;
+			case GLFW_KEY_KP_DECIMAL:
+				return Key::KeypadDecimal;
+			case GLFW_KEY_KP_DIVIDE:
+				return Key::KeypadDivide;
+			case GLFW_KEY_KP_MULTIPLY:
+				return Key::KeypadMultiply;
+			case GLFW_KEY_KP_SUBTRACT:
+				return Key::KeypadSubtract;
+			case GLFW_KEY_KP_ADD:
+				return Key::KeypadAdd;
+			case GLFW_KEY_KP_ENTER:
+				return Key::KeypadEnter;
+			case GLFW_KEY_KP_EQUAL:
+				return Key::KeypadEqual;
+			case GLFW_KEY_LEFT_SHIFT:
+				return Key::LeftShift;
+			case GLFW_KEY_LEFT_CONTROL:
+				return Key::LeftControl;
+			case GLFW_KEY_LEFT_ALT:
+				return Key::LeftAlt;
+			case GLFW_KEY_LEFT_SUPER:
+				return Key::LeftSuper;
+			case GLFW_KEY_RIGHT_SHIFT:
+				return Key::RightShift;
+			case GLFW_KEY_RIGHT_CONTROL:
+				return Key::RightControl;
+			case GLFW_KEY_RIGHT_ALT:
+				return Key::RightAlt;
+			case GLFW_KEY_RIGHT_SUPER:
+				return Key::RightSuper;
+			case GLFW_KEY_MENU:
+				return Key::Menu;
+			default:
+				return std::nullopt;
 		}
-
-		return std::nullopt;
 	}
 
 	std::optional<MouseButton> getMouseButtonFromGLFW(int button) {
-		static std::unordered_map<int, MouseButton> buttonMapping = {
-			{ GLFW_MOUSE_BUTTON_LEFT, MouseButton::Left },
-			{ GLFW_MOUSE_BUTTON_RIGHT, MouseButton::Right },
-			{ GLFW_MOUSE_BUTTON_MIDDLE, MouseButton::Middle },
-		};
-
-		if (const auto it = buttonMapping.find(button); it != buttonMapping.end()) {
-			return it->second;
+		switch (button) {
+			case GLFW_MOUSE_BUTTON_LEFT:
+				return MouseButton::Left;
+			case GLFW_MOUSE_BUTTON_RIGHT:
+				return MouseButton::Right;
+			case GLFW_MOUSE_BUTTON_MIDDLE:
+				return MouseButton::Middle;
+			default:
+				return std::nullopt;
 		}
-
-		return std::nullopt;
 	}
 
 	void InputSystems::tickKeyboardState(entt::registry& registry) {
@@ -226,11 +335,11 @@ namespace Input {
 
 		auto pollKeyboardStateView = registry.view<const Core::GLFWWindow, KeyboardState>();
 		pollKeyboardStateView.each([](const Core::GLFWWindow& window, KeyboardState& keyboardState) {
-			//KeyboardState oldStates = keyboardState;
+			// KeyboardState oldStates = keyboardState;
 			auto& keyboardStateInternal = getKeyboardStateInternal(window.window);
 			keyboardState = keyboardStateInternal;
 			keyboardStateInternal.charInput.clear();
-			//keyboardStateInternal = oldStates;
+			// keyboardStateInternal = oldStates;
 		});
 
 		auto pollMouseStateView = registry.view<const Core::GLFWWindow, MouseState>();
@@ -239,4 +348,4 @@ namespace Input {
 			mouseState = mouseStateInternal;
 		});
 	}
-} // Input
+} // namespace Input
