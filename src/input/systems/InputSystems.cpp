@@ -229,7 +229,7 @@ namespace Input {
 			//KeyboardState oldStates = keyboardState;
 			auto& keyboardStateInternal = getKeyboardStateInternal(window.window);
 			keyboardState = keyboardStateInternal;
-			keyboardStateInternal = {};
+			keyboardStateInternal.charInput.clear();
 			//keyboardStateInternal = oldStates;
 		});
 
