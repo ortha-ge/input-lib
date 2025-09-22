@@ -6,6 +6,7 @@ module;
 module Input.Systems;
 
 import Core.GLFWWindow;
+import Input.KeyboardEvent;
 import Input.KeyboardState;
 import Input.MouseState;
 
@@ -333,13 +334,27 @@ namespace Input {
 			});
 		});
 
+		// Clear old events
+		registry.view<KeyboardEvent>()
+			.each([&registry](const entt::entity entity, const KeyboardEvent&) {
+				registry.destroy(entity);
+			});
+
 		auto pollKeyboardStateView = registry.view<const Core::GLFWWindow, KeyboardState>();
-		pollKeyboardStateView.each([](const Core::GLFWWindow& window, KeyboardState& keyboardState) {
-			// KeyboardState oldStates = keyboardState;
-			auto& keyboardStateInternal = getKeyboardStateInternal(window.window);
-			keyboardState = keyboardStateInternal;
-			keyboardStateInternal.charInput.clear();
-			// keyboardStateInternal = oldStates;
+		pollKeyboardStateView.each([&registry](const Core::GLFWWindow& window, KeyboardState& keyboardState) {
+			auto& newKeyboardState = getKeyboardStateInternal(window.window);
+
+			// Generate a set of keys to show which ones have changed
+			for (uint8_t key = 0; key < KeyCount; ++key) {
+				if (newKeyboardState.keys[key] != keyboardState.keys[key]) {
+					const entt::entity eventEntity = registry.create();
+					InputEventType eventType = newKeyboardState.keys[key] ? InputEventType::Pressed : InputEventType::Released;
+					registry.emplace<KeyboardEvent>(eventEntity, static_cast<Key>(key), eventType);
+				}
+			}
+
+			keyboardState = newKeyboardState;
+			newKeyboardState.charInput.clear();
 		});
 
 		auto pollMouseStateView = registry.view<const Core::GLFWWindow, MouseState>();

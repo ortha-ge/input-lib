@@ -11,6 +11,7 @@ set (input-lib-src
 
 set (input-lib-modules
         src/input/DeviceInputEvent.cppm
+        src/input/KeyboardEvent.cppm
         src/input/KeyboardState.cppm
         src/input/MouseState.cppm
         src/input/services/InputSystemsService.cppm
