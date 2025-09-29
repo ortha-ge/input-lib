@@ -1,11 +1,7 @@
-module;
-
-#include <entt/fwd.hpp>
-
 export module Input.Systems;
 
-import Core.EnTTRegistry;
 import Core.Scheduler;
+import entt;
 
 export namespace Input {
 
