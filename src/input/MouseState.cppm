@@ -2,9 +2,9 @@ module;
 
 #include <cstdint>
 
-export module Input.MouseState;
+export module Ortha.Input.MouseState;
 
-export namespace Input {
+export namespace Ortha::Input {
 
 	enum class MouseButton : uint8_t {
 		Left = 0,
@@ -24,4 +24,4 @@ export namespace Input {
 
 	bool isMouseButtonPressed(const MouseState& mouseState, MouseButton button);
 
-} // namespace Input
+} // namespace Ortha::Input

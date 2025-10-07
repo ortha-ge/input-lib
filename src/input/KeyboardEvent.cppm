@@ -1,14 +1,14 @@
-export module Input.KeyboardEvent;
+export module Ortha.Input.KeyboardEvent;
 
-export import Input.DeviceInputEvent;
+export import Ortha.Input.DeviceInputEvent;
 
-import Input.KeyboardState;
+import Ortha.Input.KeyboardState;
 
-export namespace Input {
+export namespace Ortha::Input {
 
 	struct KeyboardEvent {
 		Key key{};
 		InputEventType eventType{};
 	};
 
-} // namespace Input
+} // namespace Ortha::Input

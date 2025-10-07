@@ -3,9 +3,9 @@ module;
 #include <cstdint>
 #include <vector>
 
-export module Input.KeyboardState;
+export module Ortha.Input.KeyboardState;
 
-export namespace Input {
+export namespace Ortha::Input {
 
 	enum class Key : uint8_t {
 		Space,
@@ -141,4 +141,4 @@ export namespace Input {
 
 	bool isKeyPressed(const KeyboardState&, Key);
 
-} // namespace Input
+} // namespace Ortha::Input

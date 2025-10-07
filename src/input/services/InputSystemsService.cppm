@@ -1,12 +1,12 @@
 
-export module Input.SystemsService;
+export module Ortha.Input.SystemsService;
 
 import kangaru;
-import Core.EnTTRegistryService;
-import Core.SchedulerService;
-export import Input.Systems;
+import Ortha.Core.EnTTRegistryService;
+import Ortha.Core.SchedulerService;
+export import Ortha.Input.Systems;
 
-export namespace Input {
+export namespace Ortha::Input {
 
     class InputSystemsService : public kgr::single_service<InputSystems, kgr::dependency<Core::EnTTRegistryService, Core::SchedulerService>>{};
 

@@ -2,10 +2,10 @@ module;
 
 #include <cstdint>
 
-module Input.KeyboardState;
+module Ortha.Input.KeyboardState;
 
-namespace Input {
+namespace Ortha::Input {
 	bool isKeyPressed(const KeyboardState& keyboardState, Key key) {
 		return keyboardState.keys[static_cast<uint8_t>(key)];
 	}
-} // namespace Input
+} // namespace Ortha::Input

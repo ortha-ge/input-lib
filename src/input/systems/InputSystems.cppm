@@ -1,9 +1,9 @@
-export module Input.Systems;
+export module Ortha.Input.Systems;
 
-import Core.Scheduler;
+import Ortha.Core.Scheduler;
 import entt;
 
-export namespace Input {
+export namespace Ortha::Input {
 
 	class InputSystems {
 	public:
@@ -25,4 +25,4 @@ export namespace Input {
 		Core::TaskHandle mTickHandle{};
 	};
 
-} // namespace Input
+} // namespace Ortha::Input

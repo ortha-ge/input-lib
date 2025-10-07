@@ -5,14 +5,14 @@ module;
 
 #include <GLFW/glfw3.h>
 
-module Input.Systems;
+module Ortha.Input.Systems;
 
-import Core.GLFWWindow;
-import Input.KeyboardEvent;
-import Input.KeyboardState;
-import Input.MouseState;
+import Ortha.Core.GLFWWindow;
+import Ortha.Input.KeyboardEvent;
+import Ortha.Input.KeyboardState;
+import Ortha.Input.MouseState;
 
-namespace Input {
+namespace Ortha::Input {
 	struct InputSystemInternal {
 		std::unordered_map<GLFWwindow*, KeyboardState> keyboardStates;
 		std::unordered_map<GLFWwindow*, MouseState> mouseStates;
@@ -365,4 +365,4 @@ namespace Input {
 			mouseState = mouseStateInternal;
 		});
 	}
-} // namespace Input
+} // namespace Ortha::Input

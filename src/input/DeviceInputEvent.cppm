@@ -2,9 +2,9 @@ module;
 
 #include <cstdint>
 
-export module Input.DeviceInputEvent;
+export module Ortha.Input.DeviceInputEvent;
 
-export namespace Input {
+export namespace Ortha::Input {
 
 	enum class InputEventType : uint8_t {
 		Pressed,
@@ -13,4 +13,4 @@ export namespace Input {
 
 	struct DeviceInputEvent {};
 
-} // namespace Input
+} // namespace Ortha::Input
