@@ -3,13 +3,13 @@ cmake_minimum_required(VERSION 3.31)
 
 find_package(glfw3 CONFIG REQUIRED)
 
-set (input-lib-src
+set (ortha-input-src
         src/input/KeyboardState.cpp
         src/input/MouseState.cpp
         src/input/systems/InputSystems.cpp
 )
 
-set (input-lib-modules
+set (ortha-input-modules
         src/input/DeviceInputEvent.cppm
         src/input/KeyboardEvent.cppm
         src/input/KeyboardState.cppm
@@ -18,11 +18,11 @@ set (input-lib-modules
         src/input/systems/InputSystems.cppm
 )
 
-add_library(input-lib STATIC ${input-lib-src} ${input-lib-modules})
+add_library(ortha-input STATIC ${ortha-input-src} ${ortha-input-modules})
 
-target_sources(input-lib PUBLIC FILE_SET modules TYPE CXX_MODULES FILES ${input-lib-modules})
-target_compile_features(input-lib PUBLIC cxx_std_23)
-target_link_libraries(input-lib PUBLIC core-lib glfw)
-target_include_directories(input-lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_sources(ortha-input PUBLIC FILE_SET modules TYPE CXX_MODULES FILES ${ortha-input-modules})
+target_compile_features(ortha-input PUBLIC cxx_std_23)
+target_link_libraries(ortha-input PUBLIC ortha-core glfw)
+target_include_directories(ortha-input PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 #add_subdirectory(tests)
